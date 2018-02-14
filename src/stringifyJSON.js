@@ -35,8 +35,8 @@ var stringifyJSON = function(obj) {
  		 	}
  		 })+']';
  		 
-		*/
- 		 
+		
+ 		 */
 
  		 var newString = '[';
  		 for (var i=0; i<obj.length; i++) {
@@ -49,13 +49,65 @@ var stringifyJSON = function(obj) {
  		 }
  		 newString += ']';
  		 return newString;
+	
 
- 		 
 
  	}
  	else {
  		return '[]';
  	}
+ }
+
+ else if (typeof (obj)==="object") {
+
+ 	if (isEmpty(obj)) {
+ 		return '{}';
+
+
+
+ 	}
+
+
+ 	else  {
+
+ 		var newString = '{';
+
+ 		for (var key in obj) {
+
+ 			if (obj[key]!== undefined && typeof(obj[key]) !=='function' ) {
+ 				
+				newString += stringifyJSON(key) + ':' ;
+	 			newString += stringifyJSON(obj[key]);
+
+	 			if (Object.keys(obj).length > 1) {
+	 				newString += ',';
+	 			}
+
+
+ 			}
+
+	 		
+
+ 		}
+ 		
+ 		if (newString[newString.length-1]===",") {
+ 			newString = newString.slice(0, newString.length-1);
+ 		}
+
+ 		newString += '}';
+ 		return newString;
+
+
+
+
+
+
+ 	}
+
+
+
+ 	
+
  }
 
 
@@ -67,6 +119,14 @@ var stringifyJSON = function(obj) {
 
 
 };
+
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
 
 
 function isObject(obj) {
