@@ -5,24 +5,25 @@
 
 var stringifyJSON = function(obj) {
   // your code goes here
-  //base case:
-  //recursion case: pop out
-  //check if number, boolean, null, array, or obj?
-
-  
 
   if (typeof(obj)==="number" || typeof(obj)==="boolean" || typeof(obj)==="undefined"  || obj===null) {
   	var stringVersion = String(obj);
   	return stringVersion;
   }
 
-  else if (typeof(obj)==="string") {
+  if (typeof(obj)==="string") {
  	return '"'+obj+'"';
   } 
 
  
- else if (Array.isArray(obj)) {
+ if (Array.isArray(obj)) {
+  var results = [];
+  for (var i=0; i<obj.length; i++) {
+     results.push(stringifyJSON(obj[i]));
+  }
+  return '['+results.join(',')+']';
 
+  /*
  	if (obj.length > 0) {
  		/*
  		 return '['+_.reduce(obj, function(accumulator, item) {
@@ -36,7 +37,7 @@ var stringifyJSON = function(obj) {
  		 })+']';
  		 
 		
- 		 */
+ 		 
 
  		 var newString = '[';
  		 for (var i=0; i<obj.length; i++) {
@@ -56,9 +57,28 @@ var stringifyJSON = function(obj) {
  	else {
  		return '[]';
  	}
+  */
+
  }
 
- else if (typeof (obj)==="object") {
+if (typeof (obj)==="object") {
+
+  var results = [];
+
+  for (var key in obj) {
+    //'a': 'apple'
+    if (obj[key]===undefined || typeof(obj[key])==='function') {
+      continue;
+    }
+
+    results.push(stringifyJSON(key)+":"+stringifyJSON(obj[key]));
+  }
+
+  return '{'+results.join(',')+'}';
+
+  /*
+
+
 
  	if (isEmpty(obj)) {
  		return '{}';
@@ -105,21 +125,14 @@ var stringifyJSON = function(obj) {
  	}
 
 
-
+*/
  	
 
  }
 
-
-
-
-
-
- 
-
-
 };
 
+/*
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
@@ -127,3 +140,4 @@ function isEmpty(obj) {
     }
     return true;
 }
+*/
